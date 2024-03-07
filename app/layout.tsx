@@ -19,7 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={poppins.className}>
-        <SocketProvider url="http://localhost:5000">{children}</SocketProvider>
+        <SocketProvider url="https://socket-io-chat-backend.onrender.com">{children}</SocketProvider>
       </body>
     </html>
   );

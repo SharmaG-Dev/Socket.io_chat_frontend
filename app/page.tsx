@@ -50,6 +50,7 @@ export default function Home() {
     };
     socket?.emit("send-message", JSON.stringify(msgObj));
     socket?.emit("message", JSON.stringify({ user: currentuser }));
+    setInputMsg("");
   }
 
   useEffect(() => {
@@ -102,7 +103,7 @@ export default function Home() {
               </div>
             ))}
         </div>
-        <div className="w-9/12 border-r border-l h-head-section p-3 max-h-head-section overflow-y-auto end-0">
+        <div className="w-9/12 border-r border-l h-head-section p-3 max-h-head-section overflow-y-auto">
           {message?.map((item: MessageProps, index: number) => (
             <Message
               key={index}
@@ -118,6 +119,7 @@ export default function Home() {
         <input
           type="text"
           placeholder="typing..."
+          value={inputMsg}
           className="p-2 px-3 border-2 border-teal-700 rounded-lg placeholder:text-teal-800 w-full"
           onChange={(e) => setInputMsg(e.target.value)}
         />
