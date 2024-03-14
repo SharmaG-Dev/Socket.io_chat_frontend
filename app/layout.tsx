@@ -4,7 +4,7 @@ import "./globals.css";
 import SocketProvider from "@/context/useSocket";
 
 const inter = Inter({ subsets: ["latin"] });
-const poppins = Lato({ weight: "700", subsets: ["latin"] });
+const poppins = Lato({ weight: "400", subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Create Next App",
