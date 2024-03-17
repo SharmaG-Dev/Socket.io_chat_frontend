@@ -12,7 +12,7 @@ const config: Config = {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
-
+        "coder-bg": 'url(https://wallpapercave.com/wp/wp6076938.jpg)'
       },
       backgroundColor: {
         "white-trans": "rgba(255, 255, 255, 0.16)"
@@ -39,5 +39,6 @@ const config: Config = {
     },
   },
   plugins: [],
+  
 };
 export default config;

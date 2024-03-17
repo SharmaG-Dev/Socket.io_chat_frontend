@@ -28,7 +28,7 @@ const Header: FC = () => {
                   href={menuItem.path}
                   className={`flex py-2 text-base lg:mr-0 lg:inline-flex lg:px-0 lg:py-6 ${
                     pathname === menuItem.path
-                      ? "text-red-500 dark:text-white font-semibold"
+                      ? "text-teal-500 dark:text-white font-medium"
                       : "text-gray-300 hover:text-white  dark:text-white/70 dark:hover:text-white"
                   }`}
                 >
