@@ -3,9 +3,7 @@
 import PostCard from "@/components/Post";
 import Login from "@/components/auth/Login";
 import SignUp from "@/components/auth/Signup";
-import ArrowBtn from "@/components/global/Arrow";
 import Logo from "@/components/global/Logo";
-import Header from "@/components/headers";
 import { useQRCode } from "@/context/useQrcode";
 import { useState } from "react";
 
@@ -15,7 +13,7 @@ export default function Home() {
 
   return (
     <div className="bg-gray-900 h-screen flex justify-center items-center relative">
-      <div className="w-11/12 h-5/6 glassMorphism rounded-lg shadow-xl flex items-center justify-center">
+      <div className="w-full h-full glassMorphism rounded-lg shadow-xl flex items-center justify-center">
         <div className="w-10/12 flex justify-evenly h-full items-center">
           <div className="flex flex-col items-center gap-10 w-1/2">
             <h1 className="text-gray-300">
