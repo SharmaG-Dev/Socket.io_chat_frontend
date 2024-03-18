@@ -2,6 +2,10 @@ import type { Metadata } from "next";
 import { Inter, Lato } from "next/font/google";
 import "./globals.css";
 import SocketProvider from "@/context/useSocket";
+import { QRCodeProvider } from "@/context/useQrcode";
+import Header from "@/components/headers";
+import clsx from "clsx";
+import StoreProvider from "./storeProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 const poppins = Lato({ weight: "400", subsets: ["latin"] });
@@ -18,8 +22,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={poppins.className}>
-        <SocketProvider url="https://socket-io-chat-backend.onrender.com">{children}</SocketProvider>
+      <body className={clsx("bg-gray-900 relative", poppins.className)}>
+        <StoreProvider>
+          <SocketProvider url="https://socket-io-chat-backend.onrender.com">
+            <QRCodeProvider>{children}</QRCodeProvider>
+          </SocketProvider>
+        </StoreProvider>
       </body>
     </html>
   );
