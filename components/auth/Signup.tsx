@@ -1,6 +1,9 @@
+import { useAppSelector } from "@/hooks/storeHooks";
 import ArrowBtn from "../global/Arrow";
 
 export default function SignUp() {
+  const isSuccess = useAppSelector((state) => state.auth.isSuccess);
+  
   return (
     <form action="" className="w-2/3 flex flex-col gap-7">
       <div className="w-full flex gap-2">
