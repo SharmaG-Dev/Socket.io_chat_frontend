@@ -2,10 +2,7 @@
 import Message from "@/components/Message";
 import ChatHeads from "@/components/chatHeads";
 import { useSocket } from "@/context/useSocket";
-import { useAppDispatch, useAppSelector } from "@/hooks/storeHooks";
-import { logoutUser } from "@/store/slices/auth";
 import moment from "moment";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 interface MessageProps {
@@ -24,14 +21,6 @@ export default function Chat() {
   const [users, setUsers] = useState<[] | null | any>(null);
   const [message, setMessages] = useState<[]>([]);
   const [inputMsg, setInputMsg] = useState<string | "">("");
-  const isAuthenticated = useAppSelector((state) => state.auth);
-  const dispatch = useAppDispatch();
-  const router = useRouter();
-
-  function handleLogout() {
-    dispatch(logoutUser());
-    router.push("/");
-  }
 
   function ConnectNewUser() {
     const UniqueId = window.prompt("enter your number or name :");
@@ -86,7 +75,6 @@ export default function Chat() {
       );
     }
   }, [socket, currentuser, activeChat]);
-
   return (
     <div className="flex flex-col items-center">
       <div className="w-full h-12 bg-teal-700 flex justify-evenly items-center text-xl uppercase font-semibold text-white">
@@ -96,11 +84,8 @@ export default function Chat() {
           onClick={ConnectNewUser}
         >
           {" "}
-          {currentuser === null ? "Connect" : currentuser}
+          {currentuser === null ? "connect" : currentuser}
         </button>
-        {isAuthenticated.isAuthenticate && (
-          <button onClick={handleLogout}>Log out</button>
-        )}
       </div>
       <div className="sm:w-full md:w-9/12 xl:w-10/12 flex">
         {/* sidebar */}

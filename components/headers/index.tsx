@@ -1,11 +1,17 @@
 "use client";
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import { useState } from "react";
 import Link from "next/link";
 import menuData from "./Menu";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { User } from "@/types/auth";
+import { LogOut } from "lucide-react";
+import { useAppDispatch, useAppSelector } from "@/hooks/storeHooks";
+import { findSelfData, logoutUser } from "@/store/slices/auth";
 
 const Header: FC = () => {
+  const dispatch = useAppDispatch();
+  const router = useRouter();
   // submenu handler
   const [openIndex, setOpenIndex] = useState(-1);
   const handleSubmenu = (index: any) => {
@@ -15,10 +21,20 @@ const Header: FC = () => {
       setOpenIndex(index);
     }
   };
+  function handleLogout() {
+    dispatch(logoutUser());
+    router.push("/");
+  }
+
+  const data: any = useAppSelector((state) => state.auth.data);
+  useEffect(() => {
+    dispatch(findSelfData());
+  }, []);
 
   const pathname = usePathname();
   return (
-    <header className=" w-full px-4  flex  justify-center items-center z-10 absolute top-0 left-0 ">
+    <header className=" w-full px-4  flex  justify-between items-center z-10 top-0 left-0 ">
+      <div></div>
       <nav>
         <ul className="block lg:flex lg:space-x-12">
           {menuData.map((menuItem, index) => (
@@ -26,10 +42,11 @@ const Header: FC = () => {
               {menuItem.path ? (
                 <Link
                   href={menuItem.path}
-                  className={`flex py-2 text-base lg:mr-0 lg:inline-flex lg:px-0 lg:py-6 ${pathname === menuItem.path
-                    ? "text-teal-500 dark:text-white font-medium"
-                    : "text-gray-300 hover:text-white  dark:text-white/70 dark:hover:text-white"
-                    }`}
+                  className={`flex py-2 text-base lg:mr-0 lg:inline-flex lg:px-0 lg:py-6 ${
+                    pathname === menuItem.path
+                      ? "text-teal-500 dark:text-white font-medium"
+                      : "text-gray-300 hover:text-white  dark:text-white/70 dark:hover:text-white"
+                  }`}
                 >
                   {menuItem.title}
                 </Link>
@@ -55,8 +72,9 @@ const Header: FC = () => {
                     </span>
                   </p>
                   <div
-                    className={`submenu relative left-0 top-full bg-gray-700 rounded-lg  transition-[top] duration-300 group-hover:opacity-100  lg:invisible lg:absolute lg:top-[110%] lg:block lg:w-[250px] lg:p-4 lg:opacity-0 lg:shadow-lg lg:group-hover:visible lg:group-hover:top-full ${openIndex === index ? "block" : "hidden"
-                      }`}
+                    className={`submenu relative left-0 top-full bg-gray-700 rounded-lg  transition-[top] duration-300 group-hover:opacity-100  lg:invisible lg:absolute lg:top-[110%] lg:block lg:w-[250px] lg:p-4 lg:opacity-0 lg:shadow-lg lg:group-hover:visible lg:group-hover:top-full ${
+                      openIndex === index ? "block" : "hidden"
+                    }`}
                   >
                     {menuItem?.submenu?.map(
                       (submenuItem: any, subIndex: number) => (
@@ -76,6 +94,20 @@ const Header: FC = () => {
           ))}
         </ul>
       </nav>
+      <div className="flex gap-3 items-center">
+        <div className="flex flex-col">
+          <h5 className="font-medium text-white text-base">{data?.name}</h5>
+          <h6 className="font-light text-xs text-gray-400">
+            @{data?.username}
+          </h6>
+        </div>
+        <button
+          onClick={handleLogout}
+          className="p-3 border border-gray-700 text-gray-700 rounded-full group animate-pulse cursor-pointer"
+        >
+          <LogOut className="text-white group-hover:text-gray-500" />
+        </button>
+      </div>
       {/* <ThemeToggler /> */}
     </header>
   );

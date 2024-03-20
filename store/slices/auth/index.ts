@@ -1,8 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { AppThunk } from '@/store/store'
-import { config } from '@/utils/config'
 import { Api } from '@/utils/Apis'
+import config from '@/config/config'
 import axios from 'axios'
+import instance from '@/utils/_utils'
 
 interface InitialStateProps {
     isLoading: boolean,
@@ -42,6 +43,7 @@ export const AuthSlice = createSlice({
                 state.data = [],
                 state.isLoading = false,
                 state.isError = false
+            window.localStorage.removeItem(config?.TOKEN_KEY ?? "")
         },
         singUpStart(state) {
             state.isLoading = true
@@ -54,6 +56,9 @@ export const AuthSlice = createSlice({
         signUpFailure(state) {
             state.isLoading = false
             state.isError = true
+        },
+        findMe(state) {
+
         }
 
     }
@@ -68,8 +73,8 @@ export default AuthSlice.reducer
 export const loginUser = (credentials: any): AppThunk => async (dispatch) => {
     dispatch(loginUserStart());
     try {
-        console.log(config.SERVERURL + Api.LOGIN_API)
-        const response = await fetch(config.SERVERURL + Api.LOGIN_API, {
+        console.log(config?.BASE_URL + Api.LOGIN_API)
+        const response = await fetch(config?.BASE_URL + Api.LOGIN_API, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -80,7 +85,9 @@ export const loginUser = (credentials: any): AppThunk => async (dispatch) => {
             throw new Error('Failed to login');
         }
         const data = await response.json();
-        dispatch(loginUserSuccess(data));
+        dispatch(loginUserSuccess(data?.user));
+        if (!config?.TOKEN_KEY) throw new Error("no token key provided ")
+        window.localStorage.setItem(config?.TOKEN_KEY, data?.token)
     } catch (error) {
         console.error('Login failed:', error);
         dispatch(loginUserFailure());
@@ -91,7 +98,7 @@ export const loginUser = (credentials: any): AppThunk => async (dispatch) => {
 export const SignUpUser = (credentials: any): AppThunk => async (dsipatch) => {
     dsipatch(singUpStart())
     try {
-        const response = await axios.post(config.SERVERURL + Api.SINGUP_API, credentials, {
+        const response = await axios.post(config?.BASE_URL + Api.SINGUP_API, credentials, {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -107,3 +114,20 @@ export const SignUpUser = (credentials: any): AppThunk => async (dsipatch) => {
         dsipatch(signUpFailure())
     }
 };
+
+
+export const findSelfData = (): AppThunk => async (dispatch) => {
+    const token = window.localStorage.getItem(config?.TOKEN_KEY ?? "")
+    if (token) {
+        dispatch(loginUserStart());
+        try {
+            const response = await instance.get(Api.ME_API)
+            if (response.status === 200) {
+                dispatch(loginUserSuccess(response.data.data));
+            }
+        } catch (error) {
+            console.log(error)
+            loginUserFailure()
+        }
+    }
+}

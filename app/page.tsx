@@ -5,15 +5,23 @@ import Login from "@/components/auth/Login";
 import SignUp from "@/components/auth/Signup";
 import Logo from "@/components/global/Logo";
 import { useQRCode } from "@/context/useQrcode";
-import { useState } from "react";
-import Atropos from 'atropos/react';
-import 'atropos/css'
-
+import { useEffect, useState } from "react";
+import Atropos from "atropos/react";
+import "atropos/css";
+import { useAppDispatch } from "@/hooks/storeHooks";
+import { findSelfData } from "@/store/slices/auth";
 
 export default function Home() {
   const { generateQRCode, qrCodeImageUrl } = useQRCode();
   const [login, setLogin] = useState<boolean>(false);
 
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(findSelfData());
+  }, []);
+
+  
   return (
     <div className="bg-gray-900 h-screen flex justify-center items-center relative">
       <div className="w-full h-full glassMorphism rounded-lg shadow-xl flex items-center justify-center">
@@ -27,10 +35,7 @@ export default function Home() {
               Instantly
             </p>
             <div className="flex items-center gap-6">
-              <Atropos
-                highlight={false}
-                shadow={false}
-              >
+              <Atropos highlight={false} shadow={false}>
                 <PostCard
                   category="backend"
                   className="h-2/4 "
@@ -42,10 +47,7 @@ export default function Home() {
                   title="Let Build the Typescript Node Server With Pro Structure"
                 />
               </Atropos>
-              <Atropos
-                highlight={false}
-                shadow={false}
-              >
+              <Atropos highlight={false} shadow={false}>
                 <PostCard
                   category="devops"
                   className="h-2/4"

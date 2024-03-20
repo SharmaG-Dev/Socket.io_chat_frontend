@@ -8,14 +8,14 @@ type Menu = {
 const menuData: Menu[] = [
   {
     id: 1,
-    title: "Home",
-    path: "/",
+    title: "Dashboard",
+    path: "/dashboard",
     newTab: false,
   },
   {
     id: 2,
     title: "Social Community",
-    path: "/social",
+    path: "/dashboard/social",
     newTab: false,
   },
   {
