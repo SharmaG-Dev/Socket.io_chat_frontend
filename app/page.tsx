@@ -21,6 +21,7 @@ export default function Home() {
     dispatch(findSelfData());
   }, []);
 
+  
   return (
     <div className="bg-gray-900 h-screen flex justify-center items-center relative">
       <div className="w-full h-full glassMorphism rounded-lg shadow-xl flex items-center justify-center">
