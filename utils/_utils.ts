@@ -1,14 +1,18 @@
+import config from "@/config/config";
+
 import axios from "axios";
-import { config } from "./config";
 
-const token = window.localStorage.getItem("token");
+const instance = axios.create()
 
-export const instance = axios.create({
-  baseURL: config.SERVERURL,
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${token}`,
-  },
-});
+instance.interceptors.request.use((axiosconfig) => {
+  axiosconfig.baseURL = config?.BASE_URL
+
+  return new Promise((resolve) => {
+    const token = window.localStorage.getItem(config?.TOKEN_KEY ?? "")
+    axiosconfig.headers.Authorization = `Bearer ${token}`
+    resolve(axiosconfig)
+  })
+})
+
 
 export default instance;

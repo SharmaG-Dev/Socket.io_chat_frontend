@@ -5,11 +5,21 @@ import Login from "@/components/auth/Login";
 import SignUp from "@/components/auth/Signup";
 import Logo from "@/components/global/Logo";
 import { useQRCode } from "@/context/useQrcode";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Atropos from "atropos/react";
+import "atropos/css";
+import { useAppDispatch } from "@/hooks/storeHooks";
+import { findSelfData } from "@/store/slices/auth";
 
 export default function Home() {
   const { generateQRCode, qrCodeImageUrl } = useQRCode();
   const [login, setLogin] = useState<boolean>(false);
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(findSelfData());
+  }, []);
 
   return (
     <div className="bg-gray-900 h-screen flex justify-center items-center relative">
@@ -24,26 +34,30 @@ export default function Home() {
               Instantly
             </p>
             <div className="flex items-center gap-6">
-              <PostCard
-                category="backend"
-                className="w-2/4 h-2/4 "
-                imageStatus={false}
-                commentsCount={34}
-                description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem ex saepe, fuga sed harum officiis nesciunt qui inventore "
-                imageUrl="/assets/img/typescript2.jpeg"
-                timeAgo="16 min"
-                title="Let Build the Typescript Node Server With Pro Structure"
-              />
-              <PostCard
-                category="devops"
-                className="w-2/4 h-2/4"
-                commentsCount={34}
-                imageStatus={false}
-                description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem ex saepe, fuga sed harum officiis nesciunt qui inventore "
-                imageUrl="/assets/img/javascript2.jpg"
-                timeAgo="16 min"
-                title="Let Build the Typescript Node Server With Pro Structure"
-              />
+              <Atropos highlight={false} shadow={false}>
+                <PostCard
+                  category="backend"
+                  className="h-2/4 "
+                  imageStatus={false}
+                  commentsCount={34}
+                  description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem ex saepe, fuga sed harum officiis nesciunt qui inventore "
+                  imageUrl="/assets/img/typescript2.jpeg"
+                  timeAgo="16 min"
+                  title="Let Build the Typescript Node Server With Pro Structure"
+                />
+              </Atropos>
+              <Atropos highlight={false} shadow={false}>
+                <PostCard
+                  category="devops"
+                  className="h-2/4"
+                  commentsCount={34}
+                  imageStatus={false}
+                  description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem ex saepe, fuga sed harum officiis nesciunt qui inventore "
+                  imageUrl="/assets/img/javascript2.jpg"
+                  timeAgo="16 min"
+                  title="Let Build the Typescript Node Server With Pro Structure"
+                />
+              </Atropos>
             </div>
           </div>
 

@@ -23,7 +23,7 @@ export default function Login() {
 
   useEffect(() => {
     if (isAuthenticated.isAuthenticate) {
-      router.push("/chat", { scroll: false });
+      router.push("/dashboard", { scroll: false });
     }
   }, [isAuthenticated, router]);
 
