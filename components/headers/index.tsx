@@ -1,15 +1,15 @@
 "use client";
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import { useState } from "react";
 import Link from "next/link";
 import menuData from "./Menu";
 import { usePathname, useRouter } from "next/navigation";
 import { User } from "@/types/auth";
 import { LogOut } from "lucide-react";
-import { useAppDispatch } from "@/hooks/storeHooks";
-import { logoutUser } from "@/store/slices/auth";
+import { useAppDispatch, useAppSelector } from "@/hooks/storeHooks";
+import { findSelfData, logoutUser } from "@/store/slices/auth";
 
-const Header: FC<{ user: User }> = ({ user }) => {
+const Header: FC = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
   // submenu handler
@@ -26,9 +26,14 @@ const Header: FC<{ user: User }> = ({ user }) => {
     router.push("/");
   }
 
+  const data: any = useAppSelector((state) => state.auth.data);
+  useEffect(() => {
+    dispatch(findSelfData());
+  }, []);
+
   const pathname = usePathname();
   return (
-    <header className=" w-full px-4  flex  justify-between items-center z-10 absolute top-0 left-0 ">
+    <header className=" w-full px-4  flex  justify-between items-center z-10 top-0 left-0 ">
       <div></div>
       <nav>
         <ul className="block lg:flex lg:space-x-12">
@@ -91,9 +96,9 @@ const Header: FC<{ user: User }> = ({ user }) => {
       </nav>
       <div className="flex gap-3 items-center">
         <div className="flex flex-col">
-          <h5 className="font-medium text-white text-base">{user?.name}</h5>
+          <h5 className="font-medium text-white text-base">{data?.name}</h5>
           <h6 className="font-light text-xs text-gray-400">
-            @{user?.username}
+            @{data?.username}
           </h6>
         </div>
         <button

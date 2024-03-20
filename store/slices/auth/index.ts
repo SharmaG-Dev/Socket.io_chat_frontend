@@ -117,14 +117,17 @@ export const SignUpUser = (credentials: any): AppThunk => async (dsipatch) => {
 
 
 export const findSelfData = (): AppThunk => async (dispatch) => {
-    dispatch(loginUserStart());
-    try {
-        const response = await instance.get(Api.ME_API)
-        if (response.status === 200) {
-            dispatch(loginUserSuccess(response.data.data));
+    const token = window.localStorage.getItem(config?.TOKEN_KEY ?? "")
+    if (token) {
+        dispatch(loginUserStart());
+        try {
+            const response = await instance.get(Api.ME_API)
+            if (response.status === 200) {
+                dispatch(loginUserSuccess(response.data.data));
+            }
+        } catch (error) {
+            console.log(error)
+            loginUserFailure()
         }
-    } catch (error) {
-        console.log(error)
-        loginUserFailure()
     }
 }

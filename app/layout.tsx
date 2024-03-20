@@ -3,7 +3,6 @@ import { Inter, Lato } from "next/font/google";
 import "./globals.css";
 import SocketProvider from "@/context/useSocket";
 import { QRCodeProvider } from "@/context/useQrcode";
-import Header from "@/components/headers";
 import clsx from "clsx";
 import StoreProvider from "./storeProvider";
 
@@ -21,8 +20,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={clsx("bg-gray-900 relative", poppins.className)}>
+    <html lang="en" suppressHydrationWarning>
+      <body className={clsx("bg-gray-900 relative", poppins.className)} >
         <StoreProvider>
           <SocketProvider url="https://socket-io-chat-backend.onrender.com">
             <QRCodeProvider>{children}</QRCodeProvider>
